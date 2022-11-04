@@ -14,20 +14,24 @@ afterAll(async () => {
 })
 
 test('Title shows up when page loads', async () => {
+    await driver.sleep(2000)
     const title = await driver.findElement(By.id('title'))
     const displayed = await title.isDisplayed()
     expect(displayed).toBe(true)
 })
 
 test('Clicking Draw button displays choices', async () => {
-    await driver.findElement(By.xpath('//draw')).click()
-    const choices = await driver.findElement(By.id('choices'))
-    const displayed = await choices.isDisplayed()
+    await driver.sleep(2000)
+    await driver.findElement(By.id('draw')).click()
+    const choicesSection = await driver.findElement(By.id('choices'))
+    const displayed = await choicesSection.isDisplayed()
     expect(displayed).toBe(true)
 })
 
 test('Clicking Add to Duo displays player-duo', async () => {
-    await driver.findElement(By.xpath('//bot-btn')).click()
+    await driver.sleep(2000)
+    await driver.findElement(By.id('draw')).click()
+    await driver.findElement(By.css('.bot-btn')).click()
     const playerDuo = await driver.findElement(By.id('player-duo'))
     const displayed = await playerDuo.isDisplayed();
     expect(displayed).toBe(true);
