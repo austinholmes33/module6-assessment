@@ -16,14 +16,6 @@ let rollbar = new Rollbar({
 // record a generic message and send it to Rollbar
 rollbar.log('Hello world!')
 
-try {
-    function notAFunction () {
-        return('nothing')
-    }
-   } catch {
-    rollbar.critical('caught backend failure')
-   };
-
    try {
     function notAFunction () {
         return('nothing')
@@ -32,24 +24,8 @@ try {
     rollbar.warning('Connection error')
    };
 
-   try {
-    function notAFunction () {
-        return('nothing')
-    }
-   } catch {
-    rollbar.info('User opened wrong page')
-   };
-
-   
-   try {
-    function notAFunction () {
-        return('nothing')
-    }
-   } catch {
-    rollbar.error('Something went wrong')
-   };
-
 app.get('/', (req, res) => {
+    rollbar.info('A user visited the website')
     res.sendFile(path.join(__dirname, "./public/index.html"))
 })
 
@@ -65,6 +41,7 @@ app.get('/api/robots', (req, res) => {
     try {
         res.status(200).send(botsArr)
     } catch (error) {
+        rollbar.error('All bots did not load')
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
     }
@@ -77,6 +54,7 @@ app.get('/api/robots/five', (req, res) => {
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
     } catch (error) {
+        rollbar.critical('Not bot choices loading')
         console.log('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
     }
