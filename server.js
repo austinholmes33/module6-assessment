@@ -6,6 +6,49 @@ const {shuffleArray} = require('./utils')
 
 app.use(express.json())
 
+let Rollbar = require('rollbar')
+let rollbar = new Rollbar({
+  accessToken: '7f95f4c5453846c6978a78c94a02a970',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
+
+try {
+    function notAFunction () {
+        return('nothing')
+    }
+   } catch {
+    rollbar.critical('caught backend failure')
+   };
+
+   try {
+    function notAFunction () {
+        return('nothing')
+    }
+   } catch {
+    rollbar.warning('Connection error')
+   };
+
+   try {
+    function notAFunction () {
+        return('nothing')
+    }
+   } catch {
+    rollbar.info('User opened wrong page')
+   };
+
+   
+   try {
+    function notAFunction () {
+        return('nothing')
+    }
+   } catch {
+    rollbar.error('Something went wrong')
+   };
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "./public/index.html"))
 })
@@ -15,7 +58,7 @@ app.get('/js', (req, res) => {
 })
 
 app.get('/styles', (req, res) => {
-    res.sendFile(path.join(__dirname, "./public/index."))
+    res.sendFile(path.join(__dirname, "./public/index.css"))
 })
 
 app.get('/api/robots', (req, res) => {
